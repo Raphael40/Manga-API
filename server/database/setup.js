@@ -8,7 +8,7 @@ const sql = fs.readFileSync(__dirname + '/setup.sql').toString();
 
 const setupDatabase = async () => {
 	try {
-		const data = await db.query(sql);
+		await db.query(sql);
 		db.end;
 		console.log('Set-up complete.');
 	} catch (error) {
