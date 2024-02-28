@@ -7,7 +7,8 @@ const app = express();
 // Handles requests that include a JSON payload in their body. e.g. POST
 app.use(express.json());
 app.use(cors());
-app.use(logger('dev'));
+app.use(logger('tiny'));
+if (process.env.NODE_ENV !== 'test') app.use(logger('dev'));
 
 app.get('/', (req, res) => {
 	res.send({
@@ -25,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-	res.status(405).send('Not allowd! Visit /mangas');
+	res.status(405).send('Not allowed! Visit /mangas');
 });
 
 module.exports = app;
