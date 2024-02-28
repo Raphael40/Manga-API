@@ -6,6 +6,7 @@ const db = require('./connection');
 
 const sql = fs.readFileSync(__dirname + '/setup.sql').toString();
 
+// This file is to set up mock data and will not be used in production
 const setupDatabase = async () => {
 	try {
 		await db.query(sql);
