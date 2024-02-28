@@ -6,7 +6,8 @@
 	"scripts": {
 		"test": "jest --watchAll --detectOpenHandles --runInBand --verbose",
 		"start": "node app.js",
-		"dev": "nodemon index.js"
+		"dev": "nodemon index.js",
+		"seed-db": "node ./database/setup.js"
 	},
 	"author": "",
 	"license": "ISC",

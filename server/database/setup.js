@@ -6,9 +6,14 @@ const db = require('./connection');
 
 const sql = fs.readFileSync(__dirname + '/setup.sql').toString();
 
-db.query(sql)
-	.then(data => {
+const setupDatabase = async () => {
+	try {
+		const data = await db.query(sql);
 		db.end;
 		console.log('Set-up complete.');
-	})
-	.catch(error => console.log(error));
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+setupDatabase();
