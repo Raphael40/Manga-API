@@ -15,7 +15,6 @@ const checkConnection = async () => {
 			console.log('Connected to the database: ohsbdtkn');
 		}
 		client.release();
-		db.end();
 	} catch (error) {
 		console.error('Error connecting to the database:', error);
 	}
