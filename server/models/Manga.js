@@ -13,14 +13,11 @@ class Manga {
 		const response = await db.query(
 			"SELECT id, name, TO_CHAR(date_published, 'YYYY-MM-DD') AS date_published, author, description FROM manga"
 		);
-		try {
-			if (response.rows.length === 0) {
-				throw new Error('No mangas available.');
-			}
-			return response.rows.map(manga => new Manga(manga));
-		} catch (error) {
-			throw new Error('Cannot get all mangas');
+
+		if (response.rows.length === 0) {
+			throw new Error('No mangas available.');
 		}
+		return response.rows.map(manga => new Manga(manga));
 	}
 }
 

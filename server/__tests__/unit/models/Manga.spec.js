@@ -23,5 +23,15 @@ describe('Manga', () => {
 			expect(mangas[1]).toEqual(expect.objectContaining({ date_published: '2024-02-02' }));
 			expect(mangas[2]).toEqual(expect.objectContaining({ description: 'Test data 3' }));
 		});
+
+		it('Throws an error if the database returns nothing', async () => {
+			jest.spyOn(db, 'query').mockResolvedValueOnce({ rows: [] });
+
+			try {
+				await Manga.getAll();
+			} catch (error) {
+				expect(error.message).toBe('No mangas available.');
+			}
+		});
 	});
 });
