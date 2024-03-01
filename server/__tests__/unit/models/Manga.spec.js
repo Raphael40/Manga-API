@@ -34,4 +34,35 @@ describe('Manga', () => {
 			}
 		});
 	});
+
+	describe('getById', () => {
+		it('returns manga by id on success', async () => {
+			let testManga = {
+				id: 1,
+				name: 'Test Manga',
+				date_published: '2024-01-01',
+				description: 'Test data',
+			};
+			jest.spyOn(db, 'query').mockResolvedValueOnce({ rows: [testManga] });
+
+			const result = await Manga.findById(1);
+			console.log(result);
+			expect(result).toBeInstanceOf(Manga);
+			expect(result.id).toBe(1);
+			expect(result.name).toBe('Test Manga');
+			expect(result.date_published).toBe('2024-01-01');
+			expect(result.description).toBe('Test data');
+		});
+
+		it('should throw an Error on db query error', async () => {
+			jest.spyOn(db, 'query').mockRejectedValue();
+
+			try {
+				await Manga.findById('red');
+			} catch (error) {
+				expect(error).toBeTruthy();
+				expect(error.message).toBe('Cannot find manga');
+			}
+		});
+	});
 });
