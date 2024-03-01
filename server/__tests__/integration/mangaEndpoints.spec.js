@@ -1,9 +1,14 @@
 const request = require('supertest');
 const app = require('../../app.js');
+const { resetTestDB } = require('./config');
 
 describe('api server', () => {
 	let api;
 	const port = 4000;
+
+	beforeEach(async () => {
+		await resetTestDB();
+	});
 
 	beforeAll(() => {
 		api = app.listen(port, () => {
@@ -39,6 +44,12 @@ describe('api server', () => {
 
 			expect(response.statusCode).toBe(405);
 			expect(response.text).toBe('Not allowed! Visit /mangas');
+		});
+	});
+
+	describe('/mangas', () => {
+		it('responds to GET /mangas with a 200 status code', done => {
+			request(api).get('/mangas').expect(200, done);
 		});
 	});
 });

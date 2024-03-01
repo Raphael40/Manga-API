@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS manga;
+DROP TABLE IF EXISTS mangas;
 
-CREATE TABLE manga (
+CREATE TABLE mangas (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     date_published DATE,
@@ -8,7 +8,7 @@ CREATE TABLE manga (
     description TEXT
 );
 
-INSERT INTO manga (name, date_published, author, description) VALUES
+INSERT INTO mangas (name, date_published, author, description) VALUES
 ('Naruto', '1999-09-21', 'Masashi Kishimoto', 'Follows the journey of Naruto Uzumaki, a young ninja who seeks recognition from his peers and dreams of becoming the Hokage, the leader of his village.'),
 ('One Piece', '1997-07-22', 'Eiichiro Oda', 'Follows the adventures of Monkey D. Luffy and his pirate crew in search of the One Piece treasure, in a world filled with powerful pirates and mythical creatures.'),
 ('Attack on Titan', '2009-09-09', 'Hajime Isayama', 'Set in a world where humanity resides within enormous walled cities to protect themselves from the Titans, gigantic humanoid creatures. Follows the story of Eren Yeager and his friends who join the military to fight the Titans after their hometown is invaded.'),
