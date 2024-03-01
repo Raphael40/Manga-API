@@ -47,9 +47,30 @@ describe('api server', () => {
 		});
 	});
 
+	// GET all
 	describe('/mangas', () => {
 		it('responds to GET /mangas with a 200 status code', done => {
 			request(api).get('/mangas').expect(200, done);
 		});
+	});
+
+	it('GET /mangas retrieves 3 items from the database', async () => {
+		const response = await request(api).get('/mangas');
+		expect(response.body.data.length).toBe(3);
+	});
+
+	// GET by Id
+	it('responds to GET /mangas/:id with a 200', done => {
+		request(api).get('/mangas/1').expect(200, done);
+	});
+
+	it('GET /mangas retrieves 1 item from the database by id', async () => {
+		const response = await request(api).get('/mangas/2');
+		expect(response.body.data.id).toBe(2);
+		expect(response.body.data.name).toBe('Test Manga 2');
+	});
+
+	it('responds to a unknown manga id with a 404 status code', done => {
+		request(api).get('/mangas/4').expect(404).expect({ error: 'Cannot find manga' }, done);
 	});
 });

@@ -46,7 +46,6 @@ describe('Manga', () => {
 			jest.spyOn(db, 'query').mockResolvedValueOnce({ rows: [testManga] });
 
 			const result = await Manga.findById(1);
-			console.log(result);
 			expect(result).toBeInstanceOf(Manga);
 			expect(result.id).toBe(1);
 			expect(result.name).toBe('Test Manga');
