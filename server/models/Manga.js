@@ -11,7 +11,7 @@ class Manga {
 
 	static async getAll() {
 		const response = await db.query(
-			"SELECT id, name, TO_CHAR(date_published, 'YYYY-MM-DD') AS date_published, author, description FROM manga"
+			"SELECT id, name, TO_CHAR(date_published, 'YYYY-MM-DD') AS date_published, author, description FROM mangas"
 		);
 
 		if (response.rows.length === 0) {
