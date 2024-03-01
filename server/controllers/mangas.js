@@ -9,4 +9,14 @@ const index = async (req, res) => {
 	}
 };
 
-module.exports = { index };
+const findById = async (req, res) => {
+	try {
+		const mangaId = parseInt(req.params.id);
+		const manga = await Manga.findById(mangaId);
+		res.status(200).send({ data: manga });
+	} catch (error) {
+		res.status(404).send({ error: error.message });
+	}
+};
+
+module.exports = { index, findById };

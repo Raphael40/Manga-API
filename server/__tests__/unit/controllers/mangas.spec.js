@@ -44,4 +44,32 @@ describe('mangas controller', () => {
 			});
 		});
 	});
+
+	describe('getById', () => {
+		let testManga, mockReq;
+		beforeEach(() => {
+			testManga = { id: 1, name: 'Test Manga', date_published: '2024-01-01' };
+			mockReq = { params: { id: 1 } };
+		});
+
+		it('Should return a single manga by id on success', async () => {
+			jest.spyOn(Manga, 'findById').mockResolvedValue(new Manga(testManga));
+
+			await mangasController.findById(mockReq, mockRes);
+
+			expect(Manga.findById).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(200);
+			expect(mockSend).toHaveBeenCalledWith({ data: new Manga(testManga) });
+		});
+
+		it('sends an error upon fail', async () => {
+			jest.spyOn(Manga, 'findById').mockRejectedValue(new Error('Error: Cannot findById'));
+
+			await mangasController.findById(mockReq, mockRes);
+
+			expect(Manga.findById).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(404);
+			expect(mockSend).toHaveBeenCalledWith({ error: 'Error: Cannot findById' });
+		});
+	});
 });
