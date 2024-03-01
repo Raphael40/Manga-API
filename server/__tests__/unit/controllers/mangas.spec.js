@@ -55,7 +55,7 @@ describe('mangas controller', () => {
 		it('Should return a single manga by id on success', async () => {
 			jest.spyOn(Manga, 'findById').mockResolvedValue(new Manga(testManga));
 
-			await mangasController.show(mockReq, mockRes);
+			await mangasController.findById(mockReq, mockRes);
 
 			expect(Manga.findById).toHaveBeenCalledTimes(1);
 			expect(mockStatus).toHaveBeenCalledWith(200);
@@ -65,7 +65,7 @@ describe('mangas controller', () => {
 		it('sends an error upon fail', async () => {
 			jest.spyOn(Manga, 'findById').mockRejectedValue(new Error('Error: Cannot findById'));
 
-			await mangasController.show(mockReq, mockRes);
+			await mangasController.findById(mockReq, mockRes);
 
 			expect(Manga.findById).toHaveBeenCalledTimes(1);
 			expect(mockStatus).toHaveBeenCalledWith(404);
