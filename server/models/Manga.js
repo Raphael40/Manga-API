@@ -29,6 +29,18 @@ class Manga {
 			throw new Error('Cannot find manga');
 		}
 	}
+
+	static async create(data) {
+		if (!data.name) {
+			throw new Error('name is missing');
+		}
+
+		const response = await db.query(
+			'INSERT INTO mangas(name, author, date_published, description) VALUES ($1, $2, $3, $4) RETURNING *',
+			[data.name, data.author, data.date_published, data.description]
+		);
+		return new Manga(response.rows[0]);
+	}
 }
 
 module.exports = Manga;
