@@ -19,4 +19,14 @@ const findById = async (req, res) => {
 	}
 };
 
-module.exports = { index, findById };
+const create = async (req, res) => {
+	try {
+		const data = req.body;
+		const newManga = await Manga.create(data);
+		res.status(201).send({ data: newManga });
+	} catch (error) {
+		res.status(400).send({ error: error.message });
+	}
+};
+
+module.exports = { index, findById, create };
