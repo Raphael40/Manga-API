@@ -10,9 +10,7 @@ class Manga {
 	}
 
 	static async getAll() {
-		const response = await db.query(
-			"SELECT id, name, TO_CHAR(date_published, 'YYYY-MM-DD') AS date_published, author, description FROM mangas"
-		);
+		const response = await db.query('SELECT * FROM mangas');
 
 		if (response.rows.length === 0) {
 			throw new Error('No mangas available.');
@@ -35,11 +33,16 @@ class Manga {
 			throw new Error('name is missing');
 		}
 
-		const response = await db.query(
-			'INSERT INTO mangas(name, author, date_published, description) VALUES ($1, $2, $3, $4) RETURNING *',
-			[data.name, data.author, data.date_published, data.description]
-		);
-		return new Manga(response.rows[0]);
+		try {
+			const response = await db.query(
+				'INSERT INTO mangas(name, author, date_published, description) VALUES ($1, $2, $3::DATE, $4) RETURNING *',
+				[data.name, data.author, data.date_published, data.description]
+			);
+
+			return new Manga(response.rows[0]);
+		} catch (error) {
+			throw new Error(error.message);
+		}
 	}
 }
 
