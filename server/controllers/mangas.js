@@ -20,12 +20,6 @@ const findById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-	const existingMangas = await Manga.getAll();
-
-	if (existingMangas.some(manga => req.body.name === manga.name)) {
-		return res.status(400).send({ error: 'This manga already exists' });
-	}
-
 	try {
 		const data = req.body;
 

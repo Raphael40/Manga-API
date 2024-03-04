@@ -33,6 +33,11 @@ class Manga {
 			throw new Error('name is missing');
 		}
 
+		const existingMangas = await this.getAll();
+		if (existingMangas.some(manga => data.name === manga.name)) {
+			throw new Error('This manga already exists');
+		}
+
 		try {
 			const response = await db.query(
 				'INSERT INTO mangas(name, author, date_published, description) VALUES ($1, $2, $3::DATE, $4) RETURNING *',
