@@ -55,6 +55,10 @@ class Manga {
 			throw new Error('Name missing');
 		}
 
+		if (!data.author && !data.date_published && !data.description) {
+			throw new Error('The request was recieved but no data was sent');
+		}
+
 		try {
 			const response = await db.query(
 				' UPDATE mangas SET name = $1, author = $2, date_published = $3, description = $4  WHERE id = $5 RETURNING * ',

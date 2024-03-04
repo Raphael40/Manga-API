@@ -119,4 +119,48 @@ describe('api server', () => {
 				.expect({ error: 'name is missing' });
 		});
 	});
+
+	// PATCH existing manga
+	describe('patch/:id', () => {
+		it('responds to PATCH /mangas/1 with status 200', done => {
+			const testData = {
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29T00:00:00.000Z',
+				description: 'Manga for testing',
+			};
+
+			request(api)
+				.patch('/mangas/1')
+				.send(testData)
+				.set('Accept', 'application/json')
+				.expect(200)
+				.expect({ data: { ...testData, id: 1 } }, done);
+		});
+
+		it("returns an error if manga doesn't exist", done => {
+			const testData = {
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29T00:00:00.000Z',
+				description: 'Manga for testing',
+			};
+
+			request(api)
+				.patch('/mangas/4')
+				.send(testData)
+				.set('Accept', 'application/json')
+				.expect(400)
+				.expect({ error: 'Cannot find manga' }, done);
+		});
+
+		it('Returns an error if no data is sent', async () => {
+			await request(api)
+				.patch('/mangas/1')
+				.send({})
+				.set('Accept', 'application/json')
+				.expect(400)
+				.expect({ error: 'The request was recieved but no data was sent' });
+		});
+	});
 });
