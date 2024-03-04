@@ -64,4 +64,32 @@ describe('Manga', () => {
 			}
 		});
 	});
+
+	describe('create', () => {
+		it('creates new database entry on success', async () => {
+			let mangaData = {
+				name: 'Test Manga',
+				date_published: '2024-01-01',
+				description: 'Test data',
+			};
+			jest.spyOn(db, 'query').mockResolvedValueOnce({ rows: [{ ...mangaData, id: 1 }] });
+
+			const result = await Manga.create(mangaData);
+
+			expect(result).toBeTruthy();
+			expect(result).toHaveProperty('id');
+			expect(result).toHaveProperty('name');
+			expect(result).toHaveProperty('date_published');
+			expect(result).toHaveProperty('description');
+		});
+
+		it('should throw an Error on db query error', async () => {
+			try {
+				await Manga.create({ date_published: '2024-01-01', description: 'Test data' });
+			} catch (error) {
+				expect(error).toBeTruthy();
+				expect(error.message).toBe('name is missing');
+			}
+		});
+	});
 });

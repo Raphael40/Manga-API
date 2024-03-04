@@ -72,4 +72,42 @@ describe('mangas controller', () => {
 			expect(mockSend).toHaveBeenCalledWith({ error: 'Error: Cannot findById' });
 		});
 	});
+
+	describe('create', () => {
+		it('it creates a new manga with a 201 status code', async () => {
+			let testManga = {
+				name: 'Test Manga',
+				author: 'Test',
+				date_published: '2024-01-01',
+				description: 'Test data',
+			};
+			const mockReq = { body: testManga };
+
+			jest.spyOn(Manga, 'create').mockResolvedValue(new Manga(testManga));
+
+			await mangasController.create(mockReq, mockRes);
+
+			expect(Manga.create).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(201);
+			expect(mockSend).toHaveBeenCalledWith({ data: new Manga({ ...testManga }) });
+		});
+
+		it('it returns an error', async () => {
+			let testManga = {
+				name: 'Test Manga',
+				author: 'Test',
+				date_published: '2024-01-01',
+				description: 'Test data',
+			};
+			const mockReq = { body: testManga };
+
+			jest.spyOn(Manga, 'create').mockRejectedValue(new Error('Error: cannot create'));
+
+			await mangasController.create(mockReq, mockRes);
+
+			expect(Manga.create).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(400);
+			expect(mockSend).toHaveBeenCalledWith({ error: 'Error: cannot create' });
+		});
+	});
 });

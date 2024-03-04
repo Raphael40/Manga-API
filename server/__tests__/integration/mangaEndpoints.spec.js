@@ -52,25 +52,71 @@ describe('api server', () => {
 		it('responds to GET /mangas with a 200 status code', done => {
 			request(api).get('/mangas').expect(200, done);
 		});
-	});
 
-	it('GET /mangas retrieves 3 items from the database', async () => {
-		const response = await request(api).get('/mangas');
-		expect(response.body.data.length).toBe(3);
+		it('GET /mangas retrieves 3 items from the database', async () => {
+			const response = await request(api).get('/mangas');
+			expect(response.body.data.length).toBe(3);
+		});
 	});
 
 	// GET by Id
-	it('responds to GET /mangas/:id with a 200', done => {
-		request(api).get('/mangas/1').expect(200, done);
+	describe('/:id', () => {
+		it('responds to GET /mangas/:id with a 200', done => {
+			request(api).get('/mangas/1').expect(200, done);
+		});
+
+		it('GET /mangas retrieves 1 item from the database by id', async () => {
+			const response = await request(api).get('/mangas/2');
+			expect(response.body.data.id).toBe(2);
+			expect(response.body.data.name).toBe('Test Manga 2');
+		});
+
+		it('responds to a unknown manga id with a 404 status code', done => {
+			request(api).get('/mangas/4').expect(404).expect({ error: 'Cannot find manga' }, done);
+		});
 	});
 
-	it('GET /mangas retrieves 1 item from the database by id', async () => {
-		const response = await request(api).get('/mangas/2');
-		expect(response.body.data.id).toBe(2);
-		expect(response.body.data.name).toBe('Test Manga 2');
-	});
+	// POST new manga
+	describe('post/', () => {
+		it('responds to POST /mangas with a 201 status code', done => {
+			const testData = {
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29T00:00:00.000Z',
+				description: 'Manga for testing',
+			};
 
-	it('responds to a unknown manga id with a 404 status code', done => {
-		request(api).get('/mangas/4').expect(404).expect({ error: 'Cannot find manga' }, done);
+			request(api)
+				.post('/mangas')
+				.send(testData)
+				.set('Accept', 'application/json')
+				.expect(201)
+				.expect({ data: { ...testData, id: 4 } }, done);
+		});
+
+		it('Returns an error if a manga with the same name aready exists', done => {
+			const testData = {
+				name: 'Test Manga',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29T00:00:00.000Z',
+				description: 'Manga for testing',
+			};
+
+			request(api)
+				.post('/mangas')
+				.send(testData)
+				.set('Accept', 'application/json')
+				.expect(400)
+				.expect({ error: 'This manga already exists' }, done);
+		});
+
+		it('Returns an error if a new manga cannot be created', async () => {
+			await request(api)
+				.post('/mangas')
+				.send({})
+				.set('Accept', 'application/json')
+				.expect(400)
+				.expect({ error: 'name is missing' });
+		});
 	});
 });

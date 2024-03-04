@@ -19,4 +19,22 @@ const findById = async (req, res) => {
 	}
 };
 
-module.exports = { index, findById };
+const create = async (req, res) => {
+	const existingMangas = await Manga.getAll();
+
+	if (existingMangas.some(manga => req.body.name === manga.name)) {
+		return res.status(400).send({ error: 'This manga already exists' });
+	}
+
+	try {
+		const data = req.body;
+
+		const newManga = await Manga.create(data);
+		console.log('hi');
+		res.status(201).send({ data: newManga });
+	} catch (error) {
+		res.status(400).send({ error: error.message });
+	}
+};
+
+module.exports = { index, findById, create };
