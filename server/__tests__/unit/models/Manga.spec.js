@@ -127,20 +127,20 @@ describe('Manga', () => {
 						name: 'Baka and Test',
 						author: 'Kenji Inoue',
 						date_published: '2007-01-29',
-						description: 'Manga for testing controller update function',
+						description: 'Manga for testing model update function',
 					},
 				],
 			});
 
 			const result = await manga.update({
 				name: 'Baka and Test',
-				description: 'Manga for testing controller update function',
+				description: 'Manga for testing model update function',
 			});
 
 			expect(result).toBeInstanceOf(Manga);
 			expect(result.id).toBe(4);
 			expect(result.name).toBe('Baka and Test');
-			expect(result.description).toBe('Manga for testing controller update function');
+			expect(result.description).toBe('Manga for testing model update function');
 			expect(result).not.toEqual(manga);
 		});
 
@@ -153,7 +153,7 @@ describe('Manga', () => {
 					description: 'Manga for testing',
 				});
 				await manga.update({
-					description: 'Manga for testing controller update function',
+					description: 'Manga for testing model update function',
 				});
 			} catch (error) {
 				expect(error).toBeTruthy();
@@ -171,7 +171,7 @@ describe('Manga', () => {
 				});
 				await manga.update({
 					name: 'Incorrect name',
-					description: 'Manga for testing controller update function',
+					description: 'Manga for testing model update function',
 				});
 			} catch (error) {
 				expect(error).toBeTruthy();

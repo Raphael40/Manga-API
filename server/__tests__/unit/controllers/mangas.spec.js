@@ -110,4 +110,87 @@ describe('mangas controller', () => {
 			expect(mockSend).toHaveBeenCalledWith({ error: 'Error: cannot create' });
 		});
 	});
+
+	describe('update', () => {
+		it('modifies a row in the database', async () => {
+			const testManga = {
+				id: 1,
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29',
+				description: 'Manga for testing',
+			};
+			jest.spyOn(Manga, 'findById').mockResolvedValue(new Manga(testManga));
+
+			const mockReq = {
+				params: { id: 1 },
+				body: {
+					name: 'Baka and Test',
+					description: 'Manga for testing controller update function',
+				},
+			};
+
+			jest.spyOn(Manga.prototype, 'update').mockResolvedValue({
+				...new Manga(testManga),
+				id: 1,
+				name: 'Baka and Test',
+				description: 'Manga for testing controller update function',
+			});
+
+			await mangasController.update(mockReq, mockRes);
+
+			expect(Manga.findById).toHaveBeenCalledTimes(1);
+			expect(Manga.prototype.update).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(200);
+			expect(mockSend).toHaveBeenCalledWith({
+				data: new Manga({
+					id: 1,
+					name: 'Baka and Test',
+					author: 'Kenji Inoue',
+					date_published: '2007-01-29',
+					description: 'Manga for testing controller update function',
+				}),
+			});
+		});
+
+		it('Should cause an error when it cannot find manga to update', async () => {
+			const mockReq = { params: { id: 49 } };
+
+			jest.spyOn(Manga, 'findById').mockRejectedValue(new Error('manga not found'));
+
+			await mangasController.update(mockReq, mockRes);
+
+			expect(Manga.findById).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(400);
+			expect(mockSend).toHaveBeenCalledWith({ error: 'manga not found' });
+		});
+
+		it('Should send an error when the update function fails', async () => {
+			const testManga = {
+				id: 1,
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29',
+				description: 'Manga for testing',
+			};
+			jest.spyOn(Manga, 'findById').mockResolvedValue(new Manga(testManga));
+
+			const mockReq = {
+				params: { id: 1 },
+				body: {
+					name: 'Baka and Test',
+					description: 'Manga for testing controller update function',
+				},
+			};
+
+			jest.spyOn(Manga.prototype, 'update').mockRejectedValue(new Error('Cannot update'));
+
+			await mangasController.update(mockReq, mockRes);
+
+			expect(Manga.findById).toHaveBeenCalledTimes(1);
+			expect(Manga.prototype.update).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(400);
+			expect(mockSend).toHaveBeenCalledWith({ error: 'Cannot update' });
+		});
+	});
 });
