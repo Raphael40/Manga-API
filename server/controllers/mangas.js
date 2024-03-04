@@ -24,7 +24,6 @@ const create = async (req, res) => {
 		const data = req.body;
 
 		const newManga = await Manga.create(data);
-		console.log('hi');
 		res.status(201).send({ data: newManga });
 	} catch (error) {
 		res.status(400).send({ error: error.message });

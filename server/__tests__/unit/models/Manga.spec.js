@@ -68,19 +68,37 @@ describe('Manga', () => {
 	describe('create', () => {
 		it('creates new database entry on success', async () => {
 			let mangaData = {
-				name: 'Test Manga',
-				date_published: '2024-01-01',
-				description: 'Test data',
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29',
+				description: 'Manga for testing',
 			};
+			jest.spyOn(Manga, 'getAll').mockResolvedValueOnce([]);
 			jest.spyOn(db, 'query').mockResolvedValueOnce({ rows: [{ ...mangaData, id: 1 }] });
 
 			const result = await Manga.create(mangaData);
 
 			expect(result).toBeTruthy();
 			expect(result).toHaveProperty('id');
-			expect(result).toHaveProperty('name');
-			expect(result).toHaveProperty('date_published');
-			expect(result).toHaveProperty('description');
+			expect(result.name).toBe('Baka and Test');
+			expect(result.date_published).toBe('2007-01-29');
+			expect(result.description).toBe('Manga for testing');
+		});
+
+		it('Should throw an error when manga already exists', async () => {
+			let mangaData = {
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29',
+				description: 'Manga for testing',
+			};
+			jest.spyOn(Manga, 'getAll').mockResolvedValueOnce([{ ...mangaData, id: 1 }]);
+			try {
+				await Manga.create(mangaData);
+			} catch (error) {
+				expect(error).toBeTruthy();
+				expect(error.message).toBe('This manga already exists');
+			}
 		});
 
 		it('should throw an Error on db query error', async () => {
@@ -89,6 +107,75 @@ describe('Manga', () => {
 			} catch (error) {
 				expect(error).toBeTruthy();
 				expect(error.message).toBe('name is missing');
+			}
+		});
+	});
+
+	describe('update', () => {
+		it('should return the updated manga on success', async () => {
+			const manga = new Manga({
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29',
+				description: 'Manga for testing',
+			});
+
+			jest.spyOn(db, 'query').mockResolvedValueOnce({
+				rows: [
+					{
+						id: 4,
+						name: 'Baka and Test',
+						author: 'Kenji Inoue',
+						date_published: '2007-01-29',
+						description: 'Manga for testing controller update function',
+					},
+				],
+			});
+
+			const result = await manga.update({
+				name: 'Baka and Test',
+				description: 'Manga for testing controller update function',
+			});
+
+			expect(result).toBeInstanceOf(Manga);
+			expect(result.id).toBe(4);
+			expect(result.name).toBe('Baka and Test');
+			expect(result.description).toBe('Manga for testing controller update function');
+			expect(result).not.toEqual(manga);
+		});
+
+		it('should throw an error if name is missing', async () => {
+			try {
+				const manga = new Manga({
+					name: 'Baka and Test',
+					author: 'Kenji Inoue',
+					date_published: '2007-01-29',
+					description: 'Manga for testing',
+				});
+				await manga.update({
+					description: 'Manga for testing controller update function',
+				});
+			} catch (error) {
+				expect(error).toBeTruthy();
+				expect(error.message).toBe('Name missing');
+			}
+		});
+
+		it('should throw an error if name is missing', async () => {
+			try {
+				const manga = new Manga({
+					name: 'Baka and Test',
+					author: 'Kenji Inoue',
+					date_published: '2007-01-29',
+					description: 'Manga for testing',
+				});
+				await manga.update({
+					name: 'Incorrect name',
+					description: 'Manga for testing controller update function',
+				});
+			} catch (error) {
+				expect(error).toBeTruthy();
+				expect(error.message).toBe('Manga not found');
 			}
 		});
 	});
