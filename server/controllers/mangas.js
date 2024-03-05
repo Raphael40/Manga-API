@@ -41,4 +41,15 @@ const update = async (req, res) => {
 	}
 };
 
-module.exports = { index, findById, create, update };
+const remove = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const manga = await Manga.findById(parseInt(id));
+		const deletedManga = await manga.delete();
+		res.status(204).send({ data: deletedManga });
+	} catch (error) {
+		res.status(404).send({ error: error.message });
+	}
+};
+
+module.exports = { index, findById, create, update, remove };

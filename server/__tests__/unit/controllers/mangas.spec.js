@@ -18,7 +18,7 @@ describe('mangas controller', () => {
 			const testMangas = [
 				{ name: 'Test Manga', date_published: '2024-01-01', description: 'Test data' },
 				{ name: 'Test Manga 2', date_published: '2024-02-02', description: 'Test data 2' },
-				{ name: 'Test Manga 3', date_published: '2024-03-03', description: 'Test data 3' },
+				{ name: 'Test Manga 3', date_published: '2024-03-03', description: 'Test data 3' }
 			];
 
 			jest.spyOn(Manga, 'getAll').mockResolvedValue(testMangas);
@@ -40,7 +40,7 @@ describe('mangas controller', () => {
 			expect(Manga.getAll).toHaveBeenCalledTimes(1);
 			expect(mockStatus).toHaveBeenCalledWith(500);
 			expect(mockSend).toHaveBeenCalledWith({
-				error: 'Something happened to your index controller',
+				error: 'Something happened to your index controller'
 			});
 		});
 	});
@@ -79,7 +79,7 @@ describe('mangas controller', () => {
 				name: 'Test Manga',
 				author: 'Test',
 				date_published: '2024-01-01',
-				description: 'Test data',
+				description: 'Test data'
 			};
 			const mockReq = { body: testManga };
 
@@ -97,7 +97,7 @@ describe('mangas controller', () => {
 				name: 'Test Manga',
 				author: 'Test',
 				date_published: '2024-01-01',
-				description: 'Test data',
+				description: 'Test data'
 			};
 			const mockReq = { body: testManga };
 
@@ -118,7 +118,7 @@ describe('mangas controller', () => {
 				name: 'Baka and Test',
 				author: 'Kenji Inoue',
 				date_published: '2007-01-29',
-				description: 'Manga for testing',
+				description: 'Manga for testing'
 			};
 			jest.spyOn(Manga, 'findById').mockResolvedValue(new Manga(testManga));
 
@@ -126,15 +126,15 @@ describe('mangas controller', () => {
 				params: { id: 1 },
 				body: {
 					name: 'Baka and Test',
-					description: 'Manga for testing controller update function',
-				},
+					description: 'Manga for testing controller update function'
+				}
 			};
 
 			jest.spyOn(Manga.prototype, 'update').mockResolvedValue({
 				...new Manga(testManga),
 				id: 1,
 				name: 'Baka and Test',
-				description: 'Manga for testing controller update function',
+				description: 'Manga for testing controller update function'
 			});
 
 			await mangasController.update(mockReq, mockRes);
@@ -148,8 +148,8 @@ describe('mangas controller', () => {
 					name: 'Baka and Test',
 					author: 'Kenji Inoue',
 					date_published: '2007-01-29',
-					description: 'Manga for testing controller update function',
-				}),
+					description: 'Manga for testing controller update function'
+				})
 			});
 		});
 
@@ -171,7 +171,7 @@ describe('mangas controller', () => {
 				name: 'Baka and Test',
 				author: 'Kenji Inoue',
 				date_published: '2007-01-29',
-				description: 'Manga for testing',
+				description: 'Manga for testing'
 			};
 			jest.spyOn(Manga, 'findById').mockResolvedValue(new Manga(testManga));
 
@@ -179,8 +179,8 @@ describe('mangas controller', () => {
 				params: { id: 1 },
 				body: {
 					name: 'Baka and Test',
-					description: 'Manga for testing controller update function',
-				},
+					description: 'Manga for testing controller update function'
+				}
 			};
 
 			jest.spyOn(Manga.prototype, 'update').mockRejectedValue(new Error('Cannot update'));
@@ -191,6 +191,72 @@ describe('mangas controller', () => {
 			expect(Manga.prototype.update).toHaveBeenCalledTimes(1);
 			expect(mockStatus).toHaveBeenCalledWith(400);
 			expect(mockSend).toHaveBeenCalledWith({ error: 'Cannot update' });
+		});
+	});
+
+	describe('remove', () => {
+		it('returns a 204 status code and the deleted item on success', async () => {
+			const testManga = {
+				id: 1,
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29',
+				description: 'Manga for testing controller delete function'
+			};
+			jest.spyOn(Manga, 'findById').mockResolvedValue(new Manga(testManga));
+
+			jest.spyOn(Manga.prototype, 'delete').mockResolvedValue(new Manga(testManga));
+
+			const mockReq = { params: { id: 1 } };
+
+			await mangasController.remove(mockReq, mockRes);
+
+			expect(Manga.findById).toHaveBeenCalledTimes(1);
+			expect(Manga.prototype.delete).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(204);
+			expect(mockSend).toHaveBeenCalledWith({
+				data: new Manga({
+					id: 1,
+					name: 'Baka and Test',
+					author: 'Kenji Inoue',
+					date_published: '2007-01-29',
+					description: 'Manga for testing controller delete function'
+				})
+			});
+		});
+
+		it('should return an error when it cannot delete the manga', async () => {
+			const mockReq = { params: { id: 3 } };
+
+			jest.spyOn(Manga, 'findById').mockRejectedValue(new Error('manga not found'));
+
+			await mangasController.remove(mockReq, mockRes);
+
+			expect(Manga.findById).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(404);
+			expect(mockSend).toHaveBeenCalledWith({ error: 'manga not found' });
+		});
+
+		it('should return an error when it cannot find the manga to delete', async () => {
+			const testManga = {
+				id: 1,
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29',
+				description: 'Manga for testing controller delete function'
+			};
+			jest.spyOn(Manga, 'findById').mockResolvedValue(new Manga(testManga));
+
+			jest.spyOn(Manga.prototype, 'delete').mockRejectedValue(new Error('Cannot delete manga'));
+
+			const mockReq = { params: { id: 3 } };
+
+			await mangasController.remove(mockReq, mockRes);
+
+			expect(Manga.findById).toHaveBeenCalledTimes(1);
+			expect(Manga.prototype.delete).toHaveBeenCalledTimes(1);
+			expect(mockStatus).toHaveBeenCalledWith(404);
+			expect(mockSend).toHaveBeenCalledWith({ error: 'Cannot delete manga' });
 		});
 	});
 });
