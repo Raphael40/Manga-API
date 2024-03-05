@@ -69,6 +69,15 @@ class Manga {
 			throw new Error('Manga not found');
 		}
 	}
+
+	async delete() {
+		try {
+			const response = await db.query('DELETE FROM mangas WHERE id = $1 RETURNING *', [this.id]);
+			return new Manga(response.rows[0]);
+		} catch (err) {
+			throw new Error('Cannot delete.');
+		}
+	}
 }
 
 module.exports = Manga;

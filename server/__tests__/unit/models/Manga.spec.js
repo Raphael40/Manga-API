@@ -11,7 +11,7 @@ describe('Manga', () => {
 			const testData = [
 				{ name: 'Test Manga', date_published: '2024-01-01', description: 'Test data' },
 				{ name: 'Test Manga 2', date_published: '2024-02-02', description: 'Test data 2' },
-				{ name: 'Test Manga 3', date_published: '2024-03-03', description: 'Test data 3' },
+				{ name: 'Test Manga 3', date_published: '2024-03-03', description: 'Test data 3' }
 			];
 
 			jest.spyOn(db, 'query').mockResolvedValueOnce({ rows: testData });
@@ -41,7 +41,7 @@ describe('Manga', () => {
 				id: 1,
 				name: 'Test Manga',
 				date_published: '2024-01-01',
-				description: 'Test data',
+				description: 'Test data'
 			};
 			jest.spyOn(db, 'query').mockResolvedValueOnce({ rows: [testManga] });
 
@@ -71,7 +71,7 @@ describe('Manga', () => {
 				name: 'Baka and Test',
 				author: 'Kenji Inoue',
 				date_published: '2007-01-29',
-				description: 'Manga for testing',
+				description: 'Manga for testing'
 			};
 			jest.spyOn(Manga, 'getAll').mockResolvedValueOnce([]);
 			jest.spyOn(db, 'query').mockResolvedValueOnce({ rows: [{ ...mangaData, id: 1 }] });
@@ -90,7 +90,7 @@ describe('Manga', () => {
 				name: 'Baka and Test',
 				author: 'Kenji Inoue',
 				date_published: '2007-01-29',
-				description: 'Manga for testing',
+				description: 'Manga for testing'
 			};
 			jest.spyOn(Manga, 'getAll').mockResolvedValueOnce([{ ...mangaData, id: 1 }]);
 			try {
@@ -117,7 +117,7 @@ describe('Manga', () => {
 				name: 'Baka and Test',
 				author: 'Kenji Inoue',
 				date_published: '2007-01-29',
-				description: 'Manga for testing',
+				description: 'Manga for testing'
 			});
 
 			jest.spyOn(db, 'query').mockResolvedValueOnce({
@@ -127,14 +127,14 @@ describe('Manga', () => {
 						name: 'Baka and Test',
 						author: 'Kenji Inoue',
 						date_published: '2007-01-29',
-						description: 'Manga for testing model update function',
-					},
-				],
+						description: 'Manga for testing model update function'
+					}
+				]
 			});
 
 			const result = await manga.update({
 				name: 'Baka and Test',
-				description: 'Manga for testing model update function',
+				description: 'Manga for testing model update function'
 			});
 
 			expect(result).toBeInstanceOf(Manga);
@@ -150,10 +150,10 @@ describe('Manga', () => {
 					name: 'Baka and Test',
 					author: 'Kenji Inoue',
 					date_published: '2007-01-29',
-					description: 'Manga for testing',
+					description: 'Manga for testing'
 				});
 				await manga.update({
-					description: 'Manga for testing model update function',
+					description: 'Manga for testing model update function'
 				});
 			} catch (error) {
 				expect(error).toBeTruthy();
@@ -167,15 +167,62 @@ describe('Manga', () => {
 					name: 'Baka and Test',
 					author: 'Kenji Inoue',
 					date_published: '2007-01-29',
-					description: 'Manga for testing',
+					description: 'Manga for testing'
 				});
 				await manga.update({
 					name: 'Incorrect name',
-					description: 'Manga for testing model update function',
+					description: 'Manga for testing model update function'
 				});
 			} catch (error) {
 				expect(error).toBeTruthy();
 				expect(error.message).toBe('Manga not found');
+			}
+		});
+	});
+
+	describe('destroy', () => {
+		it('should return the deleted manga', async () => {
+			const manga = new Manga({
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29',
+				description: 'Manga for testing'
+			});
+
+			jest.spyOn(db, 'query').mockResolvedValueOnce({
+				rows: [
+					{
+						id: 4,
+						name: 'Baka and Test',
+						author: 'Kenji Inoue',
+						date_published: '2007-01-29',
+						description: 'Manga for testing'
+					}
+				]
+			});
+
+			const result = await manga.delete();
+
+			expect(result).toBeInstanceOf(Manga);
+			expect(result.id).toBe(4);
+			expect(result.name).toBe('Baka and Test');
+			expect(result).not.toEqual(manga);
+		});
+
+		it('should throw an error if we cannot locate the manga', async () => {
+			jest.spyOn(db, 'query').mockRejectedValue();
+
+			try {
+				const manga = new Manga({
+					name: 'Baka and Test',
+					author: 'Kenji Inoue',
+					date_published: '2007-01-29',
+					description: 'Manga for testing'
+				});
+				await manga.delete();
+			} catch (error) {
+				expect(error).toBeTruthy();
+				expect(error.message).toContain('Cannot delete');
 			}
 		});
 	});
