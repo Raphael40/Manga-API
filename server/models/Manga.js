@@ -49,6 +49,26 @@ class Manga {
 			throw new Error(error.message);
 		}
 	}
+
+	async update(data) {
+		if (!data.name) {
+			throw new Error('Name missing');
+		}
+
+		if (!data.author && !data.date_published && !data.description) {
+			throw new Error('The request was recieved but no data was sent');
+		}
+
+		try {
+			const response = await db.query(
+				' UPDATE mangas SET name = $1, author = $2, date_published = $3, description = $4  WHERE id = $5 RETURNING * ',
+				[data.name, data.author, data.date_published, data.description, this.id]
+			);
+			return new Manga(response.rows[0]);
+		} catch (error) {
+			throw new Error('Manga not found');
+		}
+	}
 }
 
 module.exports = Manga;

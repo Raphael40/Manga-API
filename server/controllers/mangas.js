@@ -24,11 +24,21 @@ const create = async (req, res) => {
 		const data = req.body;
 
 		const newManga = await Manga.create(data);
-		console.log('hi');
 		res.status(201).send({ data: newManga });
 	} catch (error) {
 		res.status(400).send({ error: error.message });
 	}
 };
 
-module.exports = { index, findById, create };
+const update = async (req, res) => {
+	try {
+		const mangaToUpdate = await Manga.findById(parseInt(req.params.id));
+		req.body.name ||= mangaToUpdate.name;
+		const updatedManga = await mangaToUpdate.update(req.body);
+		res.status(200).send({ data: updatedManga });
+	} catch (error) {
+		res.status(400).send({ error: error.message });
+	}
+};
+
+module.exports = { index, findById, create, update };
