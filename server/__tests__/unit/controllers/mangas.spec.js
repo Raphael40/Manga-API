@@ -214,15 +214,7 @@ describe('mangas controller', () => {
 			expect(Manga.findById).toHaveBeenCalledTimes(1);
 			expect(Manga.prototype.delete).toHaveBeenCalledTimes(1);
 			expect(mockStatus).toHaveBeenCalledWith(204);
-			expect(mockSend).toHaveBeenCalledWith({
-				data: new Manga({
-					id: 1,
-					name: 'Baka and Test',
-					author: 'Kenji Inoue',
-					date_published: '2007-01-29',
-					description: 'Manga for testing controller delete function'
-				})
-			});
+			expect(mockEnd).toHaveBeenCalled();
 		});
 
 		it('should return an error when it cannot delete the manga', async () => {

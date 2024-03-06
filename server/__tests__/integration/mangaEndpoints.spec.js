@@ -76,14 +76,14 @@ describe('api server', () => {
 		});
 	});
 
-	// POST new manga
+	// POST new /manga
 	describe('post/', () => {
 		it('responds to POST /mangas with a 201 status code', done => {
 			const testData = {
 				name: 'Baka and Test',
 				author: 'Kenji Inoue',
 				date_published: '2007-01-29T00:00:00.000Z',
-				description: 'Manga for testing',
+				description: 'Manga for testing'
 			};
 
 			request(api)
@@ -99,7 +99,7 @@ describe('api server', () => {
 				name: 'Test Manga',
 				author: 'Kenji Inoue',
 				date_published: '2007-01-29T00:00:00.000Z',
-				description: 'Manga for testing',
+				description: 'Manga for testing'
 			};
 
 			request(api)
@@ -120,14 +120,14 @@ describe('api server', () => {
 		});
 	});
 
-	// PATCH existing manga
+	// PATCH existing manga/:id
 	describe('patch/:id', () => {
 		it('responds to PATCH /mangas/1 with status 200', done => {
 			const testData = {
 				name: 'Baka and Test',
 				author: 'Kenji Inoue',
 				date_published: '2007-01-29T00:00:00.000Z',
-				description: 'Manga for testing',
+				description: 'Manga for testing'
 			};
 
 			request(api)
@@ -143,7 +143,7 @@ describe('api server', () => {
 				name: 'Baka and Test',
 				author: 'Kenji Inoue',
 				date_published: '2007-01-29T00:00:00.000Z',
-				description: 'Manga for testing',
+				description: 'Manga for testing'
 			};
 
 			request(api)
@@ -161,6 +161,45 @@ describe('api server', () => {
 				.set('Accept', 'application/json')
 				.expect(400)
 				.expect({ error: 'The request was recieved but no data was sent' });
+		});
+	});
+
+	// DELETE existing /manga/:id
+	describe('delete/:id', () => {
+		it('responds to DELETE /mangas/:id with status 204', done => {
+			request(api).delete('/mangas/1').expect(204, done);
+		});
+
+		it('creates and then deletes a manga', async () => {
+			const testData = {
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29T00:00:00.000Z',
+				description: 'Manga for testing'
+			};
+
+			await request(api)
+				.post('/mangas')
+				.send(testData)
+				.set('Accept', 'application/json')
+				.expect(201)
+				.expect({ data: { ...testData, id: 4 } });
+
+			await request(api).delete('/mangas/4').expect(204);
+		});
+
+		it('responds to DELETE with a 404 status code if the manga does not exist', done => {
+			request(api).delete('/mangas/9').expect(404, done);
+		});
+
+		it('responds to DELETE /mangas/:id with status 204', async () => {
+			const responseBeforeDeletion = await request(api).get('/mangas');
+			expect(responseBeforeDeletion.body.data.length).toBe(3);
+
+			await request(api).delete('/mangas/1').expect(204);
+
+			const responseAfterDeletion = await request(api).get('/mangas');
+			expect(responseAfterDeletion.body.data.length).toBe(2);
 		});
 	});
 });

@@ -46,7 +46,7 @@ const remove = async (req, res) => {
 		const { id } = req.params;
 		const manga = await Manga.findById(parseInt(id));
 		const deletedManga = await manga.delete();
-		res.status(204).send({ data: deletedManga });
+		res.status(204).end();
 	} catch (error) {
 		res.status(404).send({ error: error.message });
 	}
