@@ -153,15 +153,6 @@ describe('api server', () => {
 				.expect(400)
 				.expect({ error: 'Cannot find manga' }, done);
 		});
-
-		it('Returns an error if no data is sent', async () => {
-			await request(api)
-				.patch('/mangas/1')
-				.send({})
-				.set('Accept', 'application/json')
-				.expect(400)
-				.expect({ error: 'The request was recieved but no data was sent' });
-		});
 	});
 
 	// DELETE existing /manga/:id

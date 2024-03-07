@@ -34,6 +34,9 @@ const update = async (req, res) => {
 	try {
 		const mangaToUpdate = await Manga.findById(parseInt(req.params.id));
 		req.body.name ||= mangaToUpdate.name;
+		req.body.author ||= mangaToUpdate.author;
+		req.body.date_published ||= mangaToUpdate.date_published;
+		req.body.description ||= mangaToUpdate.description;
 		const updatedManga = await mangaToUpdate.update(req.body);
 		res.status(200).send({ data: updatedManga });
 	} catch (error) {
@@ -45,7 +48,7 @@ const remove = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const manga = await Manga.findById(parseInt(id));
-		const deletedManga = await manga.delete();
+		await manga.delete();
 		res.status(204).end();
 	} catch (error) {
 		res.status(404).send({ error: error.message });
