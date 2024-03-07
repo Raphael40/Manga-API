@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-    A Node.js application for managing manga data with create, read, update and delete functionality. It has 100% test coverage and uses a docker postgres image for the test database.
+    A Node.js application for managing manga data with create, read, update and delete functionality. It has 100% test coverage and uses a docker postgres image to run tests in isolation.
 </p>
 
 ### Technical Stack
@@ -32,10 +32,10 @@ Elephant SQL database URL
 
 ### Installation:
 
-Clone the repo and install dependencies:
+Fork & clone the repo then install dependencies:
 
 ```
-git clone https://github.com/Raphael40/Manga-API.git
+git clone https://github.com/<github username>/Manga-API.git
 cd Manga-API/server
 npm install
 ```
@@ -60,6 +60,15 @@ To setup your database run:
 
 ```
 npm seed-db
+```
+
+To run tests or view coverage the following commands are available:
+
+```
+npm run test
+npm run unitTests
+npm run integrationTests
+npm run coverage
 ```
 
 To run project type command:
