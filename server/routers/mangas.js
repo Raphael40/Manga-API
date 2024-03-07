@@ -7,5 +7,6 @@ router.get('/', mangasController.index);
 router.get('/:id', mangasController.findById);
 router.post('/', mangasController.create);
 router.patch('/:id', mangasController.update);
+router.delete('/:id', mangasController.remove);
 
 module.exports = router;
