@@ -85,6 +85,15 @@ describe('Manga', () => {
 			expect(result.description).toBe('Manga for testing');
 		});
 
+		it('should throw an error when no name is provided', async () => {
+			try {
+				await Manga.create({ date_published: '2024-01-01', description: 'Test data' });
+			} catch (error) {
+				expect(error).toBeTruthy();
+				expect(error.message).toBe('name is missing');
+			}
+		});
+
 		it('Should throw an error when manga already exists', async () => {
 			let mangaData = {
 				name: 'Baka and Test',
@@ -102,11 +111,20 @@ describe('Manga', () => {
 		});
 
 		it('should throw an Error on db query error', async () => {
+			let mangaData = {
+				name: 'Baka and Test',
+				author: 'Kenji Inoue',
+				date_published: '2007-01-29',
+				description: 'Manga for testing'
+			};
+			jest.spyOn(Manga, 'getAll').mockResolvedValueOnce([]);
+			jest.spyOn(db, 'query').mockResolvedValueOnce({ rows: [] });
+
 			try {
-				await Manga.create({ date_published: '2024-01-01', description: 'Test data' });
+				await Manga.create(mangaData);
 			} catch (error) {
 				expect(error).toBeTruthy();
-				expect(error.message).toBe('name is missing');
+				expect(error.message).toBe('Could not create new manga');
 			}
 		});
 	});
@@ -161,7 +179,24 @@ describe('Manga', () => {
 			}
 		});
 
-		it('should throw an error if name is missing', async () => {
+		it('should throw an error if name is only field present', async () => {
+			try {
+				const manga = new Manga({
+					name: 'Baka and Test',
+					author: 'Kenji Inoue',
+					date_published: '2007-01-29',
+					description: 'Manga for testing'
+				});
+				await manga.update({
+					name: 'Baka and Test'
+				});
+			} catch (error) {
+				expect(error).toBeTruthy();
+				expect(error.message).toBe('The request was recieved but no data was sent');
+			}
+		});
+
+		it('should throw an error on db query error', async () => {
 			try {
 				const manga = new Manga({
 					name: 'Baka and Test',

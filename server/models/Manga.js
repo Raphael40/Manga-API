@@ -46,7 +46,7 @@ class Manga {
 
 			return new Manga(response.rows[0]);
 		} catch (error) {
-			throw new Error(error.message);
+			throw new Error('Could not create new manga');
 		}
 	}
 
