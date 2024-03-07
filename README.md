@@ -77,6 +77,10 @@ To run project type command:
 npm run dev
 ```
 
-You can now visit the end points in a browser. To test create, update and delete you can run the testEndpoints.sh script.
+You can now visit the end points in a browser. To test create, update and delete you can run the testEndpoints.sh script by adding your BASE_URL or use an api testing platform (postman, thunderclient...)
+
+```
+zsh testEndpoints.sh
+```
 
 **Enjoy!**

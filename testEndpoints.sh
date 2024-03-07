@@ -27,6 +27,10 @@ curl -X PATCH "${BASE_URL}/mangas/11" -H "Content-Type: application/json" -d '{
 echo -e "\n"
 
 # Delete newly created manga
-echo "Delete existing manga"
+echo "Delete existing manga:"
 curl -X DELETE "${BASE_URL}/mangas/11"
 echo -e "\n"
+
+echo "resetting database"
+cd server
+npm run seed-db
