@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-    A Node.js application for managing manga data with create, read, update and delete functionality. 
+    A Node.js application for managing manga data with create, read, update and delete functionality. It has 100% test coverage and uses a docker postgres image for the test database.
 </p>
 
 ### Technical Stack
@@ -40,7 +40,7 @@ cd Manga-API/server
 npm install
 ```
 
-Create a .env file with the following variables:
+Create a .env file with the following variables (include TEST_DB if you wish to run the tests):
 
 ```
 PORT=<your port>
@@ -55,5 +55,19 @@ postgres://<db name>:<db password>@<db location>/<container name> <br />
 
 e.g. postgres://testing:asdasd@localhost:5432/testing
 ```
+
+To setup your database run:
+
+```
+npm seed-db
+```
+
+To run project type command:
+
+```
+npm run dev
+```
+
+You can now visit the end points in a browser. To test create, update and delete you can run the testEndpoints.sh script.
 
 **Enjoy!**
