@@ -49,7 +49,7 @@ TEST_DB=<your portgres url>
 ```
 
 As postgres is run through docker the url is: <br />
-postgres://<db name>:<db password>@<db location>/<container name> <br />
+postgres://"<db name>:<db password>@<db location>/<container name>" <br />
 e.g. postgres://testing:asdasd@localhost:5432/testing
 
 **Enjoy!**
