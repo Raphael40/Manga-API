@@ -17,17 +17,17 @@
 
 ### endpoints:
 
-'GET / 200'
-'GET /mangas 200'
-'GET /mangas/:id 200'
-'POST /mangas 201'
-'PATCH /mangas/:id 200'
+'GET / 200' <br />
+'GET /mangas 200' <br />
+'GET /mangas/:id 200' <br />
+'POST /mangas 201' <br />
+'PATCH /mangas/:id 200' <br />
 'DELETE /mangas/:id 204'
 
 ### Requirements
 
-Node version 20.5.1
-Docker
+Node version 20.5.1 <br />
+Docker <br />
 Elephant SQL database URL
 
 ### Installation:
@@ -48,8 +48,8 @@ DB_URL=<your elephant sql database url>
 TEST_DB=<your portgres url>
 ```
 
-As postgres is run through docker the url is:
-postgres://<db name>:<db password>@<db location>/<container name>
-e.g.: postgres://testing:asdasd@localhost:5432/testing
+As postgres is run through docker the url is: <br />
+postgres://<db name>:<db password>@<db location>/<container name> <br />
+e.g. postgres://testing:asdasd@localhost:5432/testing
 
 **Enjoy!**
