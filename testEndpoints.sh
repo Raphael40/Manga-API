@@ -31,6 +31,9 @@ echo "Deleting existing manga:"
 curl -X DELETE "${BASE_URL}/mangas/11"
 echo -e "\n"
 
-echo "re-setting database"
-cd server
-npm run seed-db
+echo "Finished"
+echo -e "\n"
+
+echo "To re-run testEndpoints.sh the database needs to be re-seeded"
+echo "cd server"
+echo "npm run seed-db"
