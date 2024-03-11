@@ -13,24 +13,24 @@
 - **Jest/supertest**: Jest for JavaScript testing and Supertest for HTTP server testing.
 - **Docker-compose**: Used to containerise a postgres image on any device.
 - **PostgreSQL**: Open-source relational database known for reliability and advanced features. Used for test database.
-- **elephant-sql**: Cloud-based PostgreSQL database for production database.
+- **Elephant-sql**: Cloud-based PostgreSQL database for production database.
 
 ### endpoints:
 
-'GET / 200' <br />
-'GET /mangas 200' <br />
-'GET /mangas/:id 200' <br />
-'POST /mangas 201' <br />
-'PATCH /mangas/:id 200' <br />
-'DELETE /mangas/:id 204'
+GET / 200 <br />
+GET /mangas 200 <br />
+GET /mangas/:id 200 <br />
+POST /mangas 201 <br />
+PATCH /mangas/:id 200 <br />
+DELETE /mangas/:id 204
 
 ### Requirements
 
 Node version 20.5.1 <br />
-Docker <br />
-Elephant SQL database URL
+Docker Desktop <br />
+Postgres (I used Elephant SQL)
 
-### Installation:
+### Installation and setup:
 
 Fork & clone the repo then install dependencies:
 
@@ -40,35 +40,17 @@ cd Manga-API/server
 npm install
 ```
 
-Create a .env file with the following variables (include TEST_DB if you wish to run the tests):
+Create a .env file with the following variables:
 
 ```
 PORT=<your port>
 DB_URL=<your elephant sql database url>
-TEST_DB=<your portgres url>
-```
-
-As postgres is run through docker the url is: <br />
-
-```
-postgres://<db name>:<db password>@<db location>/<container name> <br />
-
-e.g. postgres://testing:asdasd@localhost:5432/testing
 ```
 
 To setup your database run:
 
 ```
-npm seed-db
-```
-
-To run tests or view coverage the following commands are available:
-
-```
-npm run test
-npm run unitTests
-npm run integrationTests
-npm run coverage
+npm run seed-db
 ```
 
 To run project type command:
@@ -77,10 +59,37 @@ To run project type command:
 npm run dev
 ```
 
-You can now visit the end points in a browser. To test create, update and delete you can run the testEndpoints.sh script by adding your BASE_URL or use an api testing platform (postman, thunderclient...)
+You can now visit the endpoints in a browser. To test create, update and delete you can run the testEndpoints.sh script by adding your BASE_URL or by using an api testing platform (postman, thunderclient...).
 
 ```
 zsh testEndpoints.sh
+```
+
+### Run tests:
+
+Update the .env file:
+
+```
+TEST_DB=<your portgres url>
+```
+
+As Postgres is run through Docker-Compose the url is: <br />
+
+```
+postgres://<db name>:<db password>@<db location>/<container name> <br />
+
+e.g. postgres://testing:asdasd@localhost:5432/testing
+```
+
+Ensure you have the Docker Daemon running.
+
+To run tests or view coverage the following commands are available:
+
+```
+npm run test
+npm run unitTests
+npm run integrationTests
+npm run coverage
 ```
 
 **Enjoy!**

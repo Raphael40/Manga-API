@@ -31,6 +31,6 @@ echo "Delete existing manga:"
 curl -X DELETE "${BASE_URL}/mangas/11"
 echo -e "\n"
 
-echo "resetting database"
+echo "re-setting database"
 cd server
 npm run seed-db
