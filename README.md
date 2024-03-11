@@ -27,8 +27,8 @@ DELETE /mangas/:id 204
 ### Requirements
 
 Node version 20.5.1 <br />
-Docker Desktop <br />
-Postgres (I used Elephant SQL)
+Elephant SQL
+Docker Desktop with Docker-Compose Postgres image <br />
 
 ### Installation and Setup:
 
