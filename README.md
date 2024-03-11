@@ -30,7 +30,7 @@ Node version 20.5.1 <br />
 Elephant SQL <br />
 Docker Desktop (Required for testing only)
 
-### Installation and Setup:
+### Installation & Setup:
 
 Fork & clone the repo then install dependencies:
 
