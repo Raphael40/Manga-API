@@ -28,7 +28,7 @@ DELETE /mangas/:id 204
 
 Node version 20.5.1 <br />
 Elephant SQL <br />
-Docker Desktop with Docker-Compose Postgres image
+Docker Desktop (Required for testing only)
 
 ### Installation and Setup:
 
