@@ -15,7 +15,7 @@
 - **PostgreSQL**: Open-source relational database known for reliability and advanced features. Used for test database.
 - **Elephant-sql**: Cloud-based PostgreSQL database for production database.
 
-### endpoints:
+### Endpoints:
 
 GET / 200 <br />
 GET /mangas 200 <br />
@@ -30,7 +30,7 @@ Node version 20.5.1 <br />
 Docker Desktop <br />
 Postgres (I used Elephant SQL)
 
-### Installation and setup:
+### Installation and Setup:
 
 Fork & clone the repo then install dependencies:
 
@@ -63,6 +63,8 @@ You can now visit the endpoints in a browser. To test create, update and delete 
 
 ```
 zsh testEndpoints.sh
+// or
+bash testEndpoints.sh
 ```
 
 ### Run tests:
