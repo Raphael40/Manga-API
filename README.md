@@ -43,6 +43,7 @@ npm install
 Create a .env file with the following variables:
 
 ```
+touch server/.env
 PORT=<your port>
 DB_URL=<your elephant sql database url>
 ```
@@ -50,18 +51,21 @@ DB_URL=<your elephant sql database url>
 To setup your database run:
 
 ```
+cd server
 npm run seed-db
 ```
 
 To run project type command:
 
 ```
+cd server
 npm run dev
 ```
 
 You can now visit the endpoints in a browser. To test create, update and delete you can run the testEndpoints.sh script by adding your BASE_URL or by using an api testing platform (postman, thunderclient...).
 
 ```
+cd MANGA-API
 zsh testEndpoints.sh
 // or
 bash testEndpoints.sh
@@ -72,13 +76,15 @@ bash testEndpoints.sh
 Update the .env file:
 
 ```
+server/.env
 TEST_DB=<your portgres url>
 ```
 
-As Postgres is run through Docker-Compose the url is: <br />
+The tests are run with a Docker Postgres image. Use the environment variables in the docker-compose.yaml file to get your TEST_DB url: <br />
 
 ```
-postgres://<db name>:<db password>@<db location>/<container name> <br />
+server/.env
+postgres://<db name>:<db password>@<db location>/<container name>
 
 e.g. postgres://testing:asdasd@localhost:5432/testing
 ```
@@ -88,6 +94,7 @@ Ensure you have the Docker Daemon running.
 To run tests or view coverage the following commands are available:
 
 ```
+cd server
 npm run test
 npm run unitTests
 npm run integrationTests
