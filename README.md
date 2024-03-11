@@ -17,12 +17,12 @@
 
 ### Endpoints:
 
-GET / 200 <br />
-GET /mangas 200 <br />
-GET /mangas/:id 200 <br />
-POST /mangas 201 <br />
-PATCH /mangas/:id 200 <br />
-DELETE /mangas/:id 204
+GET / <br />
+GET /mangas <br />
+GET /mangas/:id <br />
+POST /mangas <br />
+PATCH /mangas/:id <br />
+DELETE /mangas/:id
 
 ### Requirements
 
