@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-    A Node.js application for managing manga data with create, read, update and delete functionality. It has 100% test coverage and uses a docker postgres image to run tests in isolation.
+    A Node.js application for managing manga data with create, read, update and delete functionality. It has 100% test coverage and uses a docker postgres image to run tests in isolation. This service is deployed and can be accessed here: <a href="https://manga-api-1rac.onrender.com/" target="_blank">Manga API</a>
 </p>
 
 ### Technical Stack
